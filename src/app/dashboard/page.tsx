@@ -39,7 +39,7 @@ const DashboardPage = () => {
 
 
     return (
-        <div className="bg-[#09141A] w-full h-[100vh] flex align-center px-3 py-10 md:p-8 flex-col">
+        <div className="bg-[#09141A] w-full h-[100vh] flex flex-wrap justify-center px-3 py-10 md:px-8 md:py-12 overflow-auto">
             <div className="w-full flex items-center relative">
                 <div className="w-ful flex align-center text-white">
                     <button
@@ -52,23 +52,23 @@ const DashboardPage = () => {
             </div>
             <p className="w-full text-center text-white mt-5">@{profile?.username || ""}</p>
             <div 
-                className="w-full h-44 md:h-64 p-5 md:p-10 text-white bg-[#162329] relative mt-5 rounded-md flex overflow-hidden flex-col align-items-center">
+                className="w-full md:w-[70%] h-100 md:h-[300px] relative text-white bg-[#162329] mt-5 rounded-lg overflow-hidden">
                 {
                     dataCookies.profile_cookies === profile?.username && dataCookies.image_profile != undefined || dataCookies.image_profile != '' ?
-                    <>
-                    <div 
-                        style={{
-                            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 45.83%, #000000 100%)'
-                        }} 
-                        className="w-full h-44 absolute left-0 top-0 p-0 z-10">
-                    </div>
+                    <div className="w-full h-[300px] absolute top-0 left-0">
+                        <div 
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 45.83%, #000000 100%)'
+                            }} 
+                            className="w-full h-44 md:h-[300px] absolute left-0 top-0 p-0 z-10">
+                        </div>
                     
-                        <img src={dataCookies.image_profile} className="absolute left-0 top-0 w-full h-44 object-cover" />
-                    </>
+                        <img src={dataCookies.image_profile} className="absolute rounded-lg left-0 top-0 w-full h-44 md:h-[300px] object-cover" />
+                    </div>
                     : null
                 }
                     
-                    <div className="absolute bottom-5 text-md left-3 md:bottom-10 font-bold z-20">
+                    <div className="absolute bottom-5 text-md left-3 md:left-10 md:bottom-5 font-bold z-20">
                         <p>@{profile?.username || ""}, {getAge(profile?.birthday || new Date())}</p>
                         {
                             dataCookies.gender ?
@@ -87,7 +87,7 @@ const DashboardPage = () => {
                     </div>
                     
             </div>
-            <div className="w-full md:h-52 bg-[#0E191F] relative mt-5 rounded-md p-5 md:p-10">
+            <div className="w-full md:w-[70%] md:h-auto bg-[#0E191F] relative mt-5 rounded-md p-5 md:p-10">
                 <p className="text-lg text-white">About</p>
                 <Link href={'/profile/about'} className="flex absolute right-5 top-6 align-center justify-center">
                     <PencilIcon width={18} color="white" />
@@ -107,7 +107,7 @@ const DashboardPage = () => {
                     }
                     </div>
             </div>
-            <div className="w-full md:h-52 bg-[#0E191F] relative mt-5 rounded-md p-5 md:p-10">
+            <div className="w-full md:w-[70%] md:h-auto bg-[#0E191F] relative mt-5 rounded-md p-5 md:p-10">
                 <p className="text-lg text-white">Interest</p>
                 <Link href={'/profile/interest'} className="flex absolute right-5 top-6 align-center justify-center">
                     <PencilIcon width={18} color="white" />

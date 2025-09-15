@@ -57,4 +57,11 @@ export const getAge = (birthday) => {
   }
 
   return age;
+
 }
+
+export const parseDateFromString = (dateStr) => {
+  if (!dateStr) return null;
+  const [day, month, year] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};

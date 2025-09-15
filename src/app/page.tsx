@@ -7,6 +7,7 @@ import Link from "next/link";
 import { loginAPI } from "@/api/auth-api";
 import { setCookie } from "nookies";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 
 export default function Home() {
@@ -37,16 +38,34 @@ export default function Home() {
   }, [fields]);
 
   const handleLogin = async() => {
-    let data = {
-      email: fields.username,
-      username: fields.username,
-      password: fields.password
+    try {
+      let data = {
+        email: fields.username,
+        username: fields.username,
+        password: fields.password
+      }
+      let dataLogin = await loginAPI(data);
+      setCookie(null, "token", dataLogin.access_token, {
+        maxAge: 2 * 24 * 30 * 30
+      });
+      Swal.fire({
+          title: "Berhasil!",
+          text: dataLogin?.message,
+          icon: "success",
+          confirmButtonText: "OK"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            router.push('/dashboard');
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+          title: "Gagal!",
+          text: error.response?.data?.message || 'Terjadi kesalahan saat login',
+          icon: "error"
+      });
     }
-    let dataLogin = await loginAPI(data);
-    setCookie(null, "token", dataLogin.access_token, {
-      maxAge: 2 * 24 * 30 * 30
-    });
-    router.push("/dashboard");
+    
   }
   
   return (
@@ -64,10 +83,10 @@ export default function Home() {
       id={"username"}
       placeholder="Enter Email"/>
       
-      <div className="w-full md:w-[50%] flex justify-center px-2 py-3 mt-2 bg-[rgba(255,255,255,0.1)] rounded-md">
+      <div className="w-full md:w-[50%] flex items-center justify-center mt-2 bg-[rgba(255,255,255,0.1)] rounded-md">
         
         <TextInput 
-          className={"w-full md:w-[50%] px-3 text-sm md:text-md text-white rounded-md border-none"} 
+          className={"w-full px-5 py-3 text-sm md:text-md outline-0 text-white rounded-md border-0"} 
           value={fields.password} 
           onChange={handleFields}
           id={"password"}
@@ -75,12 +94,13 @@ export default function Home() {
           placeholder="Enter Password"/>
           {
             showPassword ?
-              <EyeSlashIcon onClick={handleShowPassword} className="ml-3" width={24} color="white" />
-            : <EyeIcon onClick={handleShowPassword} width={24} className="ml-3" color="white"/>
+              <EyeSlashIcon onClick={handleShowPassword} className="ml-3 mr-2" width={24} color="white" />
+            : <EyeIcon onClick={handleShowPassword} width={24} className="ml-3 mr-2" color="white"/>
           }
       </div>
-
-      <ButtonPrimary onChange={handleLogin} title={"Login"} disabled={!isFormComplete}/>
+      <div className="w-full md:w-[50%]">
+        <ButtonPrimary onChange={handleLogin} title={"Login"} disabled={!isFormComplete}/>
+      </div>
       <p className="mt-10 w-full text-center text-xs md:text-md">No account? <Link className="underline text-[#F3EDA6]" href={"/auth/register"}>Register Here</Link></p>
   </div>
 

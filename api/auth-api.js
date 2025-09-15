@@ -22,7 +22,7 @@ export const registerAPI = async (data) => {
                 "Content-Type": "application/json"
             }
         });
-        return response.data; // <-- Ini penting, karena axios membungkus data di .data
+        return response; // <-- Ini penting, karena axios membungkus data di .data
     } catch (error) {
         throw new Error(error.response?.data?.message || "Registrasi gagal");
     }
